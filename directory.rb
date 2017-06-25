@@ -71,25 +71,28 @@ def show_students
 end
 
 def save_students
+  user_choose_file
   # open the file for writing
-  file = File.open("students.csv", "w")
+  @file = File.open(@file, "w")
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
-    file.puts csv_line
+    @file.puts csv_line
   end
-  file.close
+  @file.close
   user_feedback
 end
 
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
+def load_students(file = "students.csv")
+  user_choose_file
+  @file = File.open(@file, "r")
+  @students = []
+  @file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
       @students << {name: name, cohort: cohort.to_sym}
   end
-  file.close
+  @file.close
   user_feedback
 end
 
@@ -142,6 +145,11 @@ end
 
 def user_feedback
   puts "Your action was successful!"
+end
+
+def user_choose_file
+  puts "Which file?"
+  @file = STDIN.gets.chomp
 end
 
 try_load_students
