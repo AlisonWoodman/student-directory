@@ -1,36 +1,16 @@
+# Continue refactoring the code. Which method is a bit too long?
+# What method names are not clear enough? Anything else you'd change to make your code look more elegant? Why?
+# A: Made method to avoid repetition of code for pluralising/signularising word 'student'
+# A: Moved around order of methods so grouped by printing methods, methods in the print menu, and methods that initialize the program
+
 @students = [] # an empty array accessible to all methods
 
-def input_students
-  puts "Please enter the name of the student"
-  name = STDIN.gets.chomp
-  puts "Please enter the cohort of the student"
-  cohort = STDIN.gets.chomp
-    if cohort == ""
-      cohort = "default"
-    else
-    end
-  # while the name is not empty, repeat this code
-    while !name.empty? do
-      # add the student hash to the array
-      @students << {name: name, cohort: cohort}
-      if @students.count > 1
-        puts "Now we have #{@students.count} students"
-      else
-        puts "Now we have #{@students.count} student"
-      end
-      # get another name from the user
-      puts "Please enter the name of the student"
-      puts "(or hit return to finish)"
-      name = STDIN.gets.chomp
-        unless name.empty?
-        puts "Please enter the cohort of the student"
-        cohort = STDIN.gets.chomp
-          if cohort == ""
-            cohort = "default"
-          else
-          end
-        end
-    end
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
+  puts "9. Exit" # 9 because we'll be adding more items
 end
 
 def print_header
@@ -46,21 +26,40 @@ def print_students_list
 end
 
 def print_footer
-  if @students.count > 1
-    puts "Overall, we  have #{@students.count} great students"
-  else
-    puts "Overall, we  have #{@students.count} great student"
-  end
+    student_pluralisation
+    puts "Overall, we  have #{@students.count} great #{@pluralsing}"
     puts "-------------"
     puts "\n"
 end
 
-def print_menu
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
-  puts "9. Exit" # 9 because we'll be adding more items
+def input_students
+  puts "Please enter the name of the student"
+  name = STDIN.gets.chomp
+  puts "Please enter the cohort of the student"
+  cohort = STDIN.gets.chomp
+    if cohort == ""
+      cohort = "default"
+    else
+    end
+  # while the name is not empty, repeat this code
+    while !name.empty? do
+      # add the student hash to the array
+      @students << {name: name, cohort: cohort}
+        student_pluralisation
+        puts "Now we have #{@students.count} #{@pluralsing}"
+      # get another name from the user
+      puts "Please enter the name of the student"
+      puts "(or hit return to finish)"
+      name = STDIN.gets.chomp
+        unless name.empty?
+        puts "Please enter the cohort of the student"
+        cohort = STDIN.gets.chomp
+          if cohort == ""
+            cohort = "default"
+          else
+          end
+        end
+    end
 end
 
 def show_students
@@ -126,6 +125,14 @@ def interactive_menu
   loop do
     print_menu
     process(STDIN.gets.chomp)
+  end
+end
+
+def student_pluralisation
+  if @students.count > 1
+    @pluralsing = "students"
+  else
+    @pluralsing = "student"
   end
 end
 
