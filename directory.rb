@@ -71,42 +71,43 @@ def show_students
 end
 
 def save_students
+  require 'csv'
   user_choose_file
   # open the file for writing
-  @file = File.open(@file, "w")
+  @file = CSV.open(@file, "w")
   # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
+    csv_line = student_data
     @file.puts csv_line
   end
   @file.close
   user_feedback
 end
 
-def load_students(file = "students.csv")
+def load_students
   user_choose_file
-  @file = File.open(@file, "r")
   @students = []
+  @file = File.open(@file, "r")
   @file.readlines.each do |line|
   name, cohort = line.chomp.split(',')
       @students << {name: name, cohort: cohort.to_sym}
   end
-  @file.close
+ @file.close
   user_feedback
 end
 
 def try_load_students
   if ARGV.first
-    filename = ARGV.first
+    @file = ARGV.first
   else
-    filename = "students.csv"
+    @file = "students.csv"
   end
-  if File.exists?(filename)
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
+  if File.exists?(@file)
+    load_students
+    puts "Loaded #{@students.count} from #{@file}"
   else
-    puts "Sorry, #{filename} doesn't exist."
+    puts "Sorry, #{@file} doesn't exist."
     exit
   end
 end
