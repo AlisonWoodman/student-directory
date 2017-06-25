@@ -60,12 +60,14 @@ def input_students
           end
         end
     end
+    user_feedback
 end
 
 def show_students
   print_header
   print_students_list
   print_footer
+  user_feedback
 end
 
 def save_students
@@ -78,6 +80,7 @@ def save_students
     file.puts csv_line
   end
   file.close
+  user_feedback
 end
 
 def load_students(filename = "students.csv")
@@ -87,6 +90,7 @@ def load_students(filename = "students.csv")
       @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
+  user_feedback
 end
 
 def try_load_students
@@ -134,6 +138,10 @@ def student_pluralisation
   else
     @pluralsing = "student"
   end
+end
+
+def user_feedback
+  puts "Your action was successful!"
 end
 
 try_load_students
